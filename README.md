@@ -4,9 +4,8 @@
 A simple calculator web service 
 
 ## Requirements
-- Eclipse Mars.1 or newer with Maven 3 plugin
-or
-- Maven 3.x to build from command line
+- Eclipse Mars.1 with Maven 3 plugin
+- Maven 3.3.3 to build from command line
 
 ## How to build
 ### From shell:

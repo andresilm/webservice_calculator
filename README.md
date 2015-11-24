@@ -19,14 +19,19 @@ The project is managed using Maven, so this dependencies will be automatically d
 
 
 ## How to build
-### From shell:
-Do 
+### 1.Build the calculator parser
+First of all, the MathGrammar.jj file from the 'parser' package needs to be compiled to generate the calculator parser. This is the only step that needs to be performed exclusively inside Eclipse. 
+
+Once the JavaCC Eclipse plugin is installed, a JavaCC menu should appear on the menu bar. Select MathGrammar.jj, go to 'JavaCC' menu and click on 'Compile with javacc | jjtree | jtb'. This command will create many .java files in the 'parser' package.
+
+### 2. Build the rest of the project
+Once the parser was generated, do
 
 `mvn package`
 
-in the project folder, where the pom.xml file is located. A calculator.war file should be created in /target folder.
+inside the project folder, where the pom.xml file is located. A calculator.war file should be created in /target folder.
 
-## Launching the web application
+## Launching the application from shell
 You can deploy the .war to your tomcat server, or just run the embedded tomcat server by doing
 
 `java -jar calculator.war`

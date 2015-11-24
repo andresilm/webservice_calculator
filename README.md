@@ -18,7 +18,7 @@ The project is managed using Maven, so this dependencies will be automatically d
 
 
 
-## How to build
+## How to set up
 ### 1.Build the calculator parser
 First of all, the MathGrammar.jj file from the 'parser' package needs to be compiled to generate the calculator parser. This is the only step that needs to be performed exclusively inside Eclipse. 
 
@@ -30,6 +30,16 @@ Once the parser was generated, do
 `mvn package`
 
 inside the project folder, where the pom.xml file is located. A calculator.war file should be created in /target folder.
+
+
+### 3. Deployment
+1- Create a 'db/' folder where the .war is located.
+
+2- Now, create the 'webcalc,db' that the calculator needs to store and load calculation sessions. To achieve that, use the provided 'create_database.sql' by doing:
+
+`sqlite3 webcalc.db < create_database.sql`
+
+The application is ready to be ran.
 
 ## Launching the application from shell
 You can deploy the .war to your tomcat server, or just run the embedded tomcat server by doing

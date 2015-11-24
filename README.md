@@ -10,10 +10,12 @@ or
 
 ## How to build
 ### From shell:
-Run "mvn package" in the project folder, where the pom.xml file is located. A calculator.war file should be created in /target folder.
+Do 
+`mvn package`
+in the project folder, where the pom.xml file is located. A calculator.war file should be created in /target folder.
 
 ## How to run the calculator
 You can deploy the .war to your tomcat server, or just run the embedded tomcat server by doing
 
-```java -jar calculator.war```
+`java -jar calculator.war`
 

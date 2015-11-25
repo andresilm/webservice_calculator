@@ -42,7 +42,7 @@ public class Calculator {
 	}
 
 	public CalculatorResponse processInput(String input) throws SQLException {
-		CalculatorResponse result=null;
+		CalculatorResponse result = null;
 
 		if (!input.isEmpty()) {
 
@@ -66,40 +66,45 @@ public class Calculator {
 		return input.startsWith("recuperar") || input.startsWith("guardar");
 	}
 
-	private CalculatorResponse processCommand(String input) throws NumberFormatException {
+	private CalculatorResponse processLoadCommand(String input) {
 		CalculatorResponse output = new CalculatorResponse();
+		String[] sessionCommand = input.split("\\ ");
+		boolean session_found = false;
+		try {
+			session_found = loadSessionWithId(sessionCommand[1]);
+		} catch (SQLException e) {
+			output.setStatus(CalculatorStatus.INTERNAL_ERROR);
+		}
+		if (session_found) {
+			output.addSolvedOperations(this.currentSessionCalculations);
+			output.setStatus(CalculatorStatus.OK);
+		} else
+			output.setStatus(CalculatorStatus.SESSION_NOT_FOUND);
+
+		return output;
+	}
+
+	private CalculatorResponse processSaveCommand(String input) {
+		CalculatorResponse output = new CalculatorResponse();
+		String[] sessionCommand = input.split("\\ ");
+		String sessionId = sessionCommand[1];
+		try {
+			saveCurrentSession(sessionId);
+			output.setStatus(CalculatorStatus.OK);
+		} catch (SQLException e) {
+			output.setStatus(CalculatorStatus.INTERNAL_ERROR);
+		}
+
+		return output;
+	}
+
+	private CalculatorResponse processCommand(String input) throws NumberFormatException {
+		CalculatorResponse output = null;
 
 		if (input.startsWith("recuperar")) {
-			/*
-			 * TODO: separate method
-			 */
-			String[] sessionCommand = input.split("\\ ");
-			boolean session_found=false;
-			try {
-				session_found = loadSessionWithId(sessionCommand[1]);
-			} catch (SQLException e) {
-				output.setStatus(CalculatorStatus.INTERNAL_ERROR);
-			}
-			if (session_found) {
-				output.addSolvedOperations(this.currentSessionCalculations);
-				output.setStatus(CalculatorStatus.OK);
-			}
-			else
-				output.setStatus(CalculatorStatus.SESSION_NOT_FOUND);
+			output = processLoadCommand(input);
 		} else if (input.startsWith("guardar")) {
-			/*
-			 * TODO: separate method
-			 */
-			String[] sessionCommand = input.split("\\ ");
-			String sessionId = sessionCommand[1];
-			try {
-				saveCurrentSession(sessionId);
-				output.setStatus(CalculatorStatus.OK);
-			} catch (SQLException e) {
-				output.setStatus(CalculatorStatus.INTERNAL_ERROR);
-			}
-			
-			
+			output = processSaveCommand(input);
 		}
 		return output;
 	}
@@ -112,7 +117,7 @@ public class Calculator {
 
 		try {
 			mathResult = evaluateMathExpression(parser.one_line());
-			
+
 			result.addSolvedOperation(input, mathResult.toString());
 			result.setStatus(CalculatorStatus.OK);
 		} catch (ParseException e) {
